@@ -30,8 +30,6 @@ sudo mv kube-scheduler.kubeconfig /var/lib/kubernetes/
 
 sudo mv *service /etc/systemd/system/
 
-sudo mv kube-scheduler.yaml /etc/kubernetes/config/
-
 sudo systemctl daemon-reload
 sudo systemctl enable kube-apiserver kube-controller-manager kube-scheduler
 sudo systemctl start kube-apiserver kube-controller-manager kube-scheduler
