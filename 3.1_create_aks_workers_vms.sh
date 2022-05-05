@@ -7,7 +7,7 @@ module="k8sworkers"
 aksLastWorkerIndex=$(expr $aksWorkerCount - 1)
 
 echo "Creating av-set for worker VMs"
-az vm availability-set create -g $rg -n $avSetAksWorkersName --tags module=$module
+az vm availability-set create -g $rg -n $avSetAksWorkersName --tags module=$module  -o none
 
 export AZURE_K8S_WORKER_VM_AV_SET_ID=$(az vm availability-set show -g $rg -n $avSetAksWorkersName --query id -o tsv)
 export AZURE_APP_VM_SUBNET_ID=$(az network vnet subnet show -g $rg --vnet $vnetName --name $subnetName --query id -o tsv)
@@ -23,7 +23,7 @@ do
 		vmName=$vmName \
 		vmPublicKey="$vmPublicKey" \
 		vmSize=$vmSize \
-		vmUser=$vmUser
+		vmUser=$vmUser  -o none
 		
 done
 

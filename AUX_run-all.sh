@@ -1,9 +1,12 @@
 ./1.1_create_rg.sh
 ./1.2_create_vnet.sh
 ./2.1_create_aks_master_vms.sh
+./3.1_create_aks_workers_vms.sh
+echo "Waiting for VM creation"
 sleep 300
 ./2.2_create_aks_master_lb.sh
-./3.1_create_aks_workers_vms.sh
+
+echo "Creating cluster config"
 ./4.01_create_ca.sh
 ./4.02_create_cert_admin.sh
 ./4.03_create_cert_workers.sh
@@ -17,6 +20,8 @@ sleep 300
 ./4.11_create_aks_config.sh
 ./4.12_copy_aks_config.sh
 ./4.13_create_and_copy_aks_master_encryption.sh
+
+echo "Installing cluster"
 ./5.1_create_aks_master_etcd.sh
 ./5.2_create_aks_master_control.sh
 ./6.1_install_aks_workers.sh
