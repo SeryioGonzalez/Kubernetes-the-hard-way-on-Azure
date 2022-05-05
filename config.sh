@@ -64,3 +64,5 @@ masterRBACConfigRoleAssignmentFile="$scriptFolder/$masterRBACConfigRoleAssignmen
 
 workerInstallScriptName="worker-installer.sh"
 workerInstallScript="$scriptFolder/$workerInstallScriptName"
+
+set -e

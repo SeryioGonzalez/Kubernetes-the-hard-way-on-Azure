@@ -1,5 +1,7 @@
-./1_create_vnet.sh
+./1.1_create_rg.sh
+./1.2_create_vnet.sh
 ./2.1_create_aks_master_vms.sh
+sleep 300
 ./2.2_create_aks_master_lb.sh
 ./3.1_create_aks_workers_vms.sh
 ./4.01_create_ca.sh
