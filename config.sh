@@ -1,6 +1,6 @@
 #!/bin/bash
 
-environment=seryiok8s
+environment=sergiok8s
 region=westeurope
 
 rg=$environment"RG"
