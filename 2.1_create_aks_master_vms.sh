@@ -10,11 +10,12 @@ az vm availability-set create -g $rg -n $avSetAksMastersName --tags module=$modu
 export AZURE_K8S_MASTER_VM_AV_SET_ID=$(az vm availability-set show -g $rg -n $avSetAksMastersName --query id -o tsv)
 export AZURE_APP_VM_SUBNET_ID=$(az network vnet subnet show -g $rg --vnet $vnetName --name $subnetName --query id -o tsv)
 
-for i in $(seq 0 2)
+for i in $(seq 0 `expr $aksMasterCount - 1`)
 do
 	echo "Creating K8S Master $i"
+	continue
 	vmName=$aksMasterPrefix$i
-	az group deployment create --no-wait --resource-group $rg --name "k8sMaster-$i" --template-file "template-masters.json" --parameters \
+	az deployment group create --no-wait --resource-group $rg --name "k8sMaster-$i" --template-file "template-masters.json" --parameters \
 		moduleName=$module \
 		subnetId=$AZURE_APP_VM_SUBNET_ID \
 		vmAVSetId=$AZURE_K8S_MASTER_VM_AV_SET_ID \

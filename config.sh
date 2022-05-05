@@ -17,9 +17,11 @@ vmPublicKey="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKlMlDqCEYmtD3NzHTzQXcu9Oj3U+
 
 avSetAksMastersName=$environment"MastersAvSet"
 avSetAksWorkersName=$environment"WorkersAvSet"
+k8s_cluster_name=$environment"-cluster"
 aksMasterPrefix=$environment"-k8s-master-"
 aksWorkerPrefix=$environment"-k8s-worker-"
 aksWorkerCount=3
+aksMasterCount=3
 
 aksMasterLbName=$environment"-k8s-master-lb"
 aksMasterLbPublicIpName=$environment"-k8s-master-public-ip"

@@ -61,6 +61,8 @@ do
 	
 done
 
+exit
+
 echo "APPLYING RBAC ROLE"
 scp -o StrictHostKeyChecking=no -P $aksMasterLbNATPortPrefix"0" \
 		$masterRBACConfigFile $masterRBACConfigRoleAssignmentFile $vmUser@${MASTER_PUBLIC_IP}:~/

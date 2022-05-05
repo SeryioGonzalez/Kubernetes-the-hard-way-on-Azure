@@ -16,7 +16,7 @@ for i in $(seq 0 $aksLastWorkerIndex)
 do
 	echo "Creating K8S Worker $i"
 	vmName=$aksWorkerPrefix$i
-	az group deployment create --no-wait --resource-group $rg --name "k8sWorker-$i" --template-file "template-workers.json" --parameters \
+	az deployment group create --no-wait --resource-group $rg --name "k8sWorker-$i" --template-file "template-workers.json" --parameters \
 		moduleName=$module \
 		subnetId=$AZURE_APP_VM_SUBNET_ID \
 		vmAVSetId=$AZURE_K8S_WORKER_VM_AV_SET_ID \
