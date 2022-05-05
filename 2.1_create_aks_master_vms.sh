@@ -13,7 +13,6 @@ export AZURE_APP_VM_SUBNET_ID=$(az network vnet subnet show -g $rg --vnet $vnetN
 for i in $(seq 0 `expr $aksMasterCount - 1`)
 do
 	echo "Creating K8S Master $i"
-	continue
 	vmName=$aksMasterPrefix$i
 	az deployment group create --no-wait --resource-group $rg --name "k8sMaster-$i" --template-file "template-masters.json" --parameters \
 		moduleName=$module \
