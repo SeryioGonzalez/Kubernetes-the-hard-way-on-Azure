@@ -22,7 +22,7 @@ do
 	nicId=$(echo $nicName      | cut -d- -f4)
 	
 	echo "COPYING CONFIG TO MASTER $nicId"
-	
+ 	
 	scp -o StrictHostKeyChecking=no -P $aksMasterLbNATPortPrefix$nicId \
 		$configFolder/admin.kubeconfig $configFolder/kube-controller-manager.kubeconfig $configFolder/kube-scheduler.kubeconfig \
 		$vmUser@${MASTER_PUBLIC_IP}:~/

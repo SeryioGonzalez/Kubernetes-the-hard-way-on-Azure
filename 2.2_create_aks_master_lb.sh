@@ -31,6 +31,8 @@ do
 		--nic-name $nicName -n $ipConfName \
 		--lb-name $aksMasterLbName --lb-inbound-nat-rules "natRule-$nicId" -o none
 
+	echo "NIC $nicName configured"
+
 done
 
 echo "Adding lb probe"

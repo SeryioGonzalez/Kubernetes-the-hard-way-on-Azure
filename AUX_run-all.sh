@@ -4,6 +4,7 @@
 ./3.1_create_aks_workers_vms.sh
 echo "Waiting for VM creation"
 sleep 300
+
 ./2.2_create_aks_master_lb.sh
 
 echo "Creating cluster config"
