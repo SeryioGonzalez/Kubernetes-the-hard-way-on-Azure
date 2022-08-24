@@ -17,7 +17,7 @@ do
 	vmName=$(echo $ipData | cut -d_ -f2)
 	vmId=$(echo $vmName | cut -d- -f4)
 
-	response_code_from_pod=$(ssh -o StrictHostKeyChecking=no $vmUser@${nicIp} "curl -s --head -o /dev/null -w "%{http_code}" http://$one_pod_ip")
+	response_code_from_pod=$(ssh -p $ssh_vm_port -o StrictHostKeyChecking=no $vmUser@${nicIp} "curl -s --head -o /dev/null -w "%{http_code}" http://$one_pod_ip")
 
 	echo "From $vmName response code to pod is $response_code_from_pod"
 done

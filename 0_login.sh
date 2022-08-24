@@ -1,7 +1,8 @@
 #!/bin/bash
 
-echo 'Trying to read variable subscription_id'
+source config.sh
 
+echo 'Trying to read variable subscription_id'
 
 if [ -z "$subscription_id" ]
 then

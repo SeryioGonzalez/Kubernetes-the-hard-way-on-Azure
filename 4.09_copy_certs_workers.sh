@@ -8,6 +8,6 @@ do
 	echo "COPYING CERTS TO WORKER $worker"
 	EXTERNAL_IP=$(az vm list-ip-addresses --query "[?virtualMachine.name == '$worker'].virtualMachine.network.publicIpAddresses[0].ipAddress" -o tsv)
 	
-	scp -o StrictHostKeyChecking=no $caFolder/${worker}*pem $caFolder/ca.pem $vmUser@${EXTERNAL_IP}:~/
+	scp -P $ssh_vm_port -o StrictHostKeyChecking=no $caFolder/${worker}*pem $caFolder/ca.pem $vmUser@${EXTERNAL_IP}:~/
 	
 done

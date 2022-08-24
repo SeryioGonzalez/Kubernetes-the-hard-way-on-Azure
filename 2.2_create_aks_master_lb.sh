@@ -24,7 +24,7 @@ do
 	#Create a NAT rule
 	az network lb inbound-nat-rule create -g $rg -n "natRule-$nicId" \
 		--lb-name $aksMasterLbName --protocol Tcp \
-        --frontend-port "$aksMasterLbNATPortPrefix$nicId" --backend-port 22 --frontend-ip-name LoadBalancerFrontEnd -o none
+        --frontend-port "$aksMasterLbNATPortPrefix$nicId" --backend-port $ssh_vm_port --frontend-ip-name LoadBalancerFrontEnd -o none
 	
 	#Associate NAT Rule to NIC
 	az network nic ip-config update -g $rg \
