@@ -13,7 +13,7 @@ az network nsg create -g $rg -n $nsg_name -o none
 
 echo "Creating nsg rules for master VMs"
 az network nsg rule create -g $rg --nsg-name $nsg_name -n ssh_alternative --priority 200 --source-address-prefixes '*' --destination-port-ranges $ssh_vm_port --access Allow --protocol Tcp --description "Allow ssh on port $ssh_vm_port" -o none
-az network nsg rule create -g $rg --nsg-name $nsg_name -n etcd_control    --priority 20q --source-address-prefixes '*' --destination-port-ranges 6443 --access Allow --protocol Tcp --description "Allow etcd on port 6443" -o none
+az network nsg rule create -g $rg --nsg-name $nsg_name -n etcd_control    --priority 201 --source-address-prefixes '*' --destination-port-ranges 6443 --access Allow --protocol Tcp --description "Allow etcd on port 6443" -o none
 
 
 export AZURE_K8S_MASTER_VM_AV_SET_ID=$(az vm availability-set show -g $rg -n $avSetAksMastersName --query id -o tsv)

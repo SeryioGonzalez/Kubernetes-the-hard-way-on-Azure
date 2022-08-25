@@ -1,8 +1,8 @@
 #!/bin/bash
 
-subscription_id="6d33b69a-ec90-4bf5-800e-2783e37b6c4e"
+vmPublicKey=$(cat /home/$USER/.ssh/id_rsa.pub)
 
-environment=sergiok8s
+environment=sergiokube
 region=westeurope
 
 rg=$environment"RG"
@@ -15,7 +15,6 @@ podsCidr="10.1.0.0/16"
 
 vmSize="Standard_D4s_v3"
 vmUser="sergio"
-vmPublicKey="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKlMlDqCEYmtD3NzHTzQXcu9Oj3U+CKYCU4D+kwEN5BuKs5J9lPFA9B2MsK9MYsyXoG4Gkt3ENHyzY+dgCN3eLdyiyOAtpHKddqO+5CG3mZoTlONTSofZm2pbnCoWh8UdKlBUvD467gFbw+HcBnXXY89zhdBIkhjQELcuZc0je8XsYrw++9DEJW9GBlREE8E/RustYlF5/MsNHvIxZqKNhBocX4Cj/nUdV+aGxTMa4pEnFi8gDA8xuYK9mDA/GNFd47TMa6kd+YLlojlfzp1GGDiwDK1px1TpjjzXan/dMMFbCsL5dgpuFul34U0yOdg7iEgoAUUwTGvHQsMyIl+BJ sergio@MININT-SCP2P2V"
 ssh_vm_port="22222"
 
 avSetAksMastersName=$environment"MastersAvSet"

@@ -1,5 +1,9 @@
+
+echo "Login to Azure"
+./0_login.sh
 ./1.1_create_rg.sh
 ./1.2_create_vnet.sh
+
 echo "Creating VMs"
 ./2.1_create_aks_master_vms.sh
 ./3.1_create_aks_workers_vms.sh
