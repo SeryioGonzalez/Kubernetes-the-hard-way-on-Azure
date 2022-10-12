@@ -20,6 +20,9 @@
 		"moduleName":{
 			"type":"string"
 		},
+        "nsgId":{
+            "type": "string"
+        },
 		"subnetId":{
 			"type":"string"
 		}
@@ -48,7 +51,10 @@
 							}
 						}
 					}
-				]
+				],
+                "networkSecurityGroup": {
+                    "id": "[parameters('nsgId')]"
+                }
 			}
 		},
 		{

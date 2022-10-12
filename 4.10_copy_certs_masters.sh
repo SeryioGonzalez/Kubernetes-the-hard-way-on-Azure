@@ -10,7 +10,6 @@ do
 	nicId=$(echo $nicName      | cut -d- -f4)
 	
 	echo "COPYING CERTS TO MASTER $nicId"
-	
 	scp -o StrictHostKeyChecking=no -P $aksMasterLbNATPortPrefix$nicId \
 		$caFolder/ca.pem $caFolder/ca-key.pem \
 		$caFolder/kubernetes-key.pem $caFolder/kubernetes.pem \

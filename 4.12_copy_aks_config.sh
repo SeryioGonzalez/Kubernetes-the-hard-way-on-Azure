@@ -11,7 +11,7 @@ do
 	
 	echo "COPYING CONFIG TO WORKER $workerName"
 	
-	scp -o StrictHostKeyChecking=no $configFolder/$workerName.kubeconfig $configFolder/kube-proxy.kubeconfig $vmUser@$workerIpAddress:~/
+	scp -P $ssh_vm_port -o StrictHostKeyChecking=no $configFolder/$workerName.kubeconfig $configFolder/kube-proxy.kubeconfig $vmUser@$workerIpAddress:~/
 done
 
 echo "COPYING CONFIG TO MASTERS"
