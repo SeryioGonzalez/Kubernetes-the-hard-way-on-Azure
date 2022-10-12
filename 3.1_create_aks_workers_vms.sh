@@ -21,7 +21,7 @@ do
 		subnetId=$AZURE_APP_VM_SUBNET_ID \
 		vmAVSetId=$AZURE_K8S_WORKER_VM_AV_SET_ID \
 		vmName=$vmName \
-		vmPublicKey="$vmPublicKey" \
+		vmPublicKey="$vm_public_key" \
 		vmSize=$vmSize \
 		vmUser=$vmUser  -o none
 		
