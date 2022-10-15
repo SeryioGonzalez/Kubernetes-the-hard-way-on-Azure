@@ -2,8 +2,6 @@
 
 subscription_id=$AZURE_SUBSCRIPTION_ID_POC
 
-environment=sergiok8s
-
 environment=sergiokube
 region=westeurope
 
@@ -18,7 +16,7 @@ podsCidr="10.1.0.0/16"
 vmSize="Standard_D4s_v3"
 vmUser="sergio"
 
-vm_public_key=$PUBLIC_KEY_FILE
+vm_public_key=$(cat $PUBLIC_KEY_FILE)
 ssh_vm_port="22222"
 
 avSetAksMastersName=$environment"MastersAvSet"

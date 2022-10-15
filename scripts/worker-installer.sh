@@ -6,16 +6,17 @@ export ALL_WORKERS_CIDR=$2
 sudo apt-get update -y > /dev/null
 sudo apt-get -y install socat conntrack ipset > /dev/null
 
+sudo swapon --show
+sudo swapoff -a
+
 wget -q --https-only \
-  https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.12.0/crictl-v1.12.0-linux-amd64.tar.gz \
-  https://storage.googleapis.com/kubernetes-the-hard-way/runsc-50c283b9f56bb7200938d9e207355f05f79f0d17 \
-  https://github.com/opencontainers/runc/releases/download/v1.0.0-rc5/runc.amd64 \
-  https://github.com/containernetworking/plugins/releases/download/v0.6.0/cni-plugins-amd64-v0.6.0.tgz \
-  https://github.com/containerd/containerd/releases/download/v1.2.0-rc.0/containerd-1.2.0-rc.0.linux-amd64.tar.gz \
-  https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl \
-  https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kube-proxy \
-  https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubelet
-  
+  https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.25.0/crictl-v1.25.0-linux-amd64.tar.gz \
+  https://github.com/opencontainers/runc/releases/download/v1.1.4/runc.amd64 \
+  https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz \
+  https://github.com/containerd/containerd/releases/download/v1.6.8/containerd-1.6.8-linux-amd64.tar.gz \
+  wget https://dl.k8s.io/v1.25.3/kubernetes-node-linux-amd64.tar.gz
+
+
 sudo mkdir -p \
   /etc/cni/net.d \
   /opt/cni/bin \
@@ -24,13 +25,20 @@ sudo mkdir -p \
   /var/lib/kubernetes \
   /var/run/kubernetes
   
-sudo mv runsc-50c283b9f56bb7200938d9e207355f05f79f0d17 runsc
-sudo mv runc.amd64 runc
-chmod +x kubectl kube-proxy kubelet runc runsc
-sudo mv kubectl kube-proxy kubelet runc runsc /usr/local/bin/
-sudo tar -xvf crictl-v1.12.0-linux-amd64.tar.gz -C /usr/local/bin/
-sudo tar -xvf cni-plugins-amd64-v0.6.0.tgz -C /opt/cni/bin/
-sudo tar -xvf containerd-1.2.0-rc.0.linux-amd64.tar.gz -C /
+sudo tar -xf cni-plugins-linux-amd64-v1.1.1.tgz -C /opt/cni/bin/
+
+mkdir -p containerd
+sudo tar -xf crictl-v1.25.0-linux-amd64.tar.gz 
+sudo tar -xf containerd-1.6.8-linux-amd64.tar.gz -C containerd
+sudo tar -xf cni-plugins-linux-amd64-v1.1.1.tgz -C /opt/cni/bin/
+sudo cp runc.amd64 runc
+sudo chmod +x runc 
+sudo cp runc /usr/local/bin/
+sudo cp containerd/bin/* /bin/
+
+tar -xf kubernetes-node-linux-amd64.tar.gz
+chmod +x kubernetes/node/bin/kubectl kubernetes/node/bin/kube-proxy kubernetes/node/bin/kubelet 
+sudo mv  kubernetes/node/bin/kubectl kubernetes/node/bin/kube-proxy kubernetes/node/bin/kubelet /usr/local/bin/
 
 cat <<EOF | sudo tee /etc/cni/net.d/10-bridge.conf
 {
@@ -66,14 +74,6 @@ cat << EOF | sudo tee /etc/containerd/config.toml
       runtime_type = "io.containerd.runtime.v1.linux"
       runtime_engine = "/usr/local/bin/runc"
       runtime_root = ""
-    [plugins.cri.containerd.untrusted_workload_runtime]
-      runtime_type = "io.containerd.runtime.v1.linux"
-      runtime_engine = "/usr/local/bin/runsc"
-      runtime_root = "/run/containerd/runsc"
-    [plugins.cri.containerd.gvisor]
-      runtime_type = "io.containerd.runtime.v1.linux"
-      runtime_engine = "/usr/local/bin/runsc"
-      runtime_root = "/run/containerd/runsc"
 EOF
 
 cat <<EOF | sudo tee /etc/systemd/system/containerd.service
@@ -98,9 +98,9 @@ LimitCORE=infinity
 WantedBy=multi-user.target
 EOF
 
-sudo mv ${HOSTNAME}-key.pem ${HOSTNAME}.pem /var/lib/kubelet/
-sudo mv ${HOSTNAME}.kubeconfig /var/lib/kubelet/kubeconfig
-sudo mv ca.pem /var/lib/kubernetes/
+sudo cp ${HOSTNAME}-key.pem ${HOSTNAME}.pem /var/lib/kubelet/
+sudo cp ${HOSTNAME}.kubeconfig /var/lib/kubelet/kubeconfig
+sudo cp ca.pem /var/lib/kubernetes/
 
 cat <<EOF | sudo tee /var/lib/kubelet/kubelet-config.yaml
 kind: KubeletConfiguration
@@ -132,8 +132,7 @@ After=containerd.service
 Requires=containerd.service
 
 [Service]
-ExecStart=/usr/local/bin/kubelet --config=/var/lib/kubelet/kubelet-config.yaml --container-runtime=remote --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock --image-pull-progress-deadline=3m --kubeconfig=/var/lib/kubelet/kubeconfig --network-plugin=cni --register-node=true --allow-privileged=true
- --v=2
+ExecStart=/usr/local/bin/kubelet --config=/var/lib/kubelet/kubelet-config.yaml --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock  --kubeconfig=/var/lib/kubelet/kubeconfig --register-node=true --v=2
 Restart=on-failure
 RestartSec=5
 

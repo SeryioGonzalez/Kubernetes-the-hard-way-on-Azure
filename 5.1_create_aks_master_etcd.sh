@@ -2,7 +2,7 @@
 
 source config.sh
 
-echo "CREATING MASTER GENERIC ETCD CONFIG"
+echo "CREATING ETCD CONFIG WITH INFO FROM ALL MASTERS"
 cp $etcdScriptTemplate $etcdScript
 for nicData in $(az network nic list -g $rg --query "[?tags.module == 'k8smasters'].{name:name, privateIp:ipConfigurations[0].privateIpAddress}" -o tsv | sed 's/\t/_/; s/-nic//')
 do
@@ -22,7 +22,7 @@ do
 	fi
 done
 
-echo "CREATING MASTER SPECIFIC ETCD CONFIG"
+echo "CREATING MASTER SPECIFIC ETCD CONFIG FILES"
 for nicData in $(az network nic list -g $rg --query "[?tags.module == 'k8smasters'].{name:name, privateIp:ipConfigurations[0].privateIpAddress}" -o tsv | sed 's/\t/_/; s/-nic//')
 do
 	vmName=$(echo $nicData | cut -d_ -f1)
@@ -54,7 +54,7 @@ do
 	scp -o StrictHostKeyChecking=no -P $aksMasterLbNATPortPrefix$nicId \
 		$masterEtcdScript $vmUser@${MASTER_PUBLIC_IP}:~/$etcdScriptName
 	
-	#Download etcd binaries
+	#Download and run etcd installers
 	ssh -p $aksMasterLbNATPortPrefix$nicId $vmUser@${MASTER_PUBLIC_IP} "chmod 777 /home/$vmUser/$etcdInstallScriptName; /home/$vmUser/$etcdInstallScriptName"
 		
 	#Copy etcd service descriptor and start it

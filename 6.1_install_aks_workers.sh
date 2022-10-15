@@ -17,9 +17,7 @@ do
 	thisWorkerPodsCidr="$ipCidrOctec1.$ipCidrOctec2.$vmId.0/24"
 	
 	echo "INSTALLING WORKER $vmName"
-	scp -P $ssh_vm_port -o StrictHostKeyChecking=no  \
-		$workerInstallScript $vmUser@${nicIp}:~/
-		
+	scp -P $ssh_vm_port -o StrictHostKeyChecking=no $workerInstallScript $vmUser@${nicIp}:~/
 	ssh -p $ssh_vm_port -o StrictHostKeyChecking=no $vmUser@${nicIp} "chmod 777 /home/$vmUser/$workerInstallScriptName; /home/$vmUser/$workerInstallScriptName $thisWorkerPodsCidr $podsCidr"
 	
 done

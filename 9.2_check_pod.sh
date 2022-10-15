@@ -2,14 +2,15 @@
 
 source config.sh
 
-echo "Deploy sample nginx deployment"
-kubectl apply -f https://k8s.io/examples/application/deployment.yaml
+echo "DEPLOY SAMPLE NGINX DEPLOYMENT"
+kubectl apply -f https://k8s.io/examples/application/deployment.yaml > /dev/null
 
+echo "WAITING FOR 30 SECONDS FOR PODS TO RUN"
 sleep 30
 
 one_pod_ip=$(kubectl get pod -o jsonpath="{.items[0].status.podIP}")
 
-echo "Testing pod connectivity from workers"
+echo "TESTING CONNECTIVITY TO PODS FROM WORKERS"
 for ipData in $(az network public-ip list -g $rg --query "[?tags.module == 'k8sworkers'].{ipAddress:ipAddress, name:name}" -o tsv | sed 's/-public-ip//; s/\t/_/')
 do
 	

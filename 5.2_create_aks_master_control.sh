@@ -4,6 +4,10 @@ source config.sh
 
 echo "CREATING GENERIC MASTER API CONFIG"
 cp $masterApiScriptTemplate $masterApiScript
+
+		KUBERNETES_PUBLIC_ADDRESS=$(az network public-ip show -g $rg -n $aksMasterLbPublicIpName --query ipAddress -o tsv)
+sed -i "s/__KUBERNETES_PUBLIC_ADDRESS__/$KUBERNETES_PUBLIC_ADDRESS/" $masterApiScript
+
 for nicData in $(az network nic list -g $rg --query "[?tags.module == 'k8smasters'].{name:name, privateIp:ipConfigurations[0].privateIpAddress}" -o tsv | sed 's/\t/_/; s/-nic//')
 do
 	vmName=$(echo $nicData | cut -d_ -f1)
@@ -61,12 +65,12 @@ do
 	
 done
 
-exit
-
 echo "APPLYING RBAC ROLE"
 scp -o StrictHostKeyChecking=no -P $aksMasterLbNATPortPrefix"0" \
 		$masterRBACConfigFile $masterRBACConfigRoleAssignmentFile $vmUser@${MASTER_PUBLIC_IP}:~/
 ssh -p $aksMasterLbNATPortPrefix"0" $vmUser@${MASTER_PUBLIC_IP} "kubectl apply --kubeconfig admin.kubeconfig -f $masterRBACConfigFileName"
 ssh -p $aksMasterLbNATPortPrefix"0" $vmUser@${MASTER_PUBLIC_IP} "kubectl apply --kubeconfig admin.kubeconfig -f $masterRBACConfigRoleAssignmentFileName"
+
+
 	
 	

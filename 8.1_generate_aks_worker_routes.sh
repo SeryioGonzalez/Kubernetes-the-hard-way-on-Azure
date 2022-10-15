@@ -4,8 +4,8 @@ source config.sh
 
 echo "CREATING RT FOR WORKERS"
 
-az network route-table create -g $rg -n $aksWorkerRTName
-az network vnet subnet update -g $rg --vnet-name $vnetName --name $subnetName --route-table $aksWorkerRTName
+az network route-table create -g $rg -n $aksWorkerRTName  -o none
+az network vnet subnet update -g $rg --vnet-name $vnetName --name $subnetName --route-table $aksWorkerRTName  -o none
 
 ipCidrOctec1=$(echo $podsCidr | cut -d. -f1)
 ipCidrOctec2=$(echo $podsCidr | cut -d. -f2)
@@ -27,6 +27,6 @@ do
 	az network route-table route create -g $rg -n "to_$workerName" \
 		--route-table-name $aksWorkerRTName --address-prefix $podsCidr \
 		--next-hop-type VirtualAppliance \
-		--next-hop-ip-address $workerPrivateIp
+		--next-hop-ip-address $workerPrivateIp -o none
 
 done

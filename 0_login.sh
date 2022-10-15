@@ -2,7 +2,7 @@
 
 source config.sh
 
-echo 'Trying to read variable subscription_id'
+echo 'TRYING TO READ VARIABLE subscription_id'
 
 if [ -z "$subscription_id" ]
 then
@@ -11,6 +11,6 @@ then
 	  read subscription_id
 fi
 
-echo "\$subscription_id is $subscription_id"
+echo "subscription_id is $subscription_id"
 
 az account set -s $subscription_id

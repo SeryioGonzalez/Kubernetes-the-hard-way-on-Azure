@@ -57,7 +57,7 @@ kubectl config set-context default \
 
 kubectl config use-context default --kubeconfig=$configFolder/kube-proxy.kubeconfig
 
-echo "Creating K8S Kube controller config"
+echo "Creating K8S kube-controller-manager config"
 kubectl config set-cluster kubernetes-the-hard-way \
 	--certificate-authority=$caFolder/ca.pem \
 	--embed-certs=true \
@@ -77,7 +77,7 @@ kubectl config set-context default \
 
 kubectl config use-context default --kubeconfig=$configFolder/kube-controller-manager.kubeconfig
 
-echo "Creating K8S Kube scheduler config"
+echo "Creating K8S kube-scheduler config"
 kubectl config set-cluster kubernetes-the-hard-way \
 	--certificate-authority=$caFolder/ca.pem \
 	--embed-certs=true \
@@ -97,7 +97,7 @@ kubectl config set-context default \
 
 kubectl config use-context default --kubeconfig=$configFolder/kube-scheduler.kubeconfig
 
-echo "Creating K8S Kube admin config"
+echo "Creating K8S kube-admin config"
 kubectl config set-cluster kubernetes-the-hard-way \
 	--certificate-authority=$caFolder/ca.pem \
 	--embed-certs=true \
