@@ -14,3 +14,5 @@ fi
 echo "subscription_id is $subscription_id"
 
 az account set -s $subscription_id
+
+echo "I am using subscription $subscription_id"
