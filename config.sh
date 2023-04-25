@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Setting subscription"
+
 subscription_id=$AZURE_SUBSCRIPTION_ID_POC
 
 echo "Starting configuration"

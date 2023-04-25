@@ -3,6 +3,7 @@
 source config.sh
 
 echo "CREATING CERTS FOR WORKERS"
+
 for worker in $(az vm list -g $rg --query "[?tags.module == 'k8sworkers'].name" -o tsv)
 do	
 	echo "CREATING CERTS FOR WORKER $worker"
