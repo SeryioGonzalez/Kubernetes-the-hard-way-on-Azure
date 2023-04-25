@@ -2,6 +2,8 @@
 
 subscription_id=$AZURE_SUBSCRIPTION_ID_POC
 
+echo "Starting configuration"
+
 environment=sergiokube
 region=westeurope
 
